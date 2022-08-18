@@ -51,6 +51,7 @@
 (declare fnc-length)
 (declare fnc-terpri)
 (declare fnc-reverse)
+(declare fnc-even)
 
 ; Funciones auxiliares
 (declare buscar)
@@ -66,6 +67,7 @@
 (declare aplicar-lambda-multiple)
 (declare evaluar-clausulas-en-cond)
 (declare evaluar-secuencia-en-cond)
+
 
 
 (defn -main
@@ -90,7 +92,7 @@
            length length list list listp listp load load lt lt nil nil
            not not null null or or prin3 prin3 quote quote read read
            rest rest reverse reverse setq setq sub sub t t terpri terpri
-           + add - sub)))
+           + add - sub even even)))
   ([amb]
    (print ">>> ") (flush)
    (try
@@ -299,6 +301,7 @@
    (igual? fnc 'reverse)   (fnc-reverse lae)
    (igual? fnc '+)         (fnc-add lae)
    (igual? fnc '-)         (fnc-sub lae)
+   (igual? fnc 'even)         (fnc-even lae)
 
    ; Las funciones primitivas reciben argumentos y retornan un valor (son puras)
 
@@ -947,6 +950,17 @@
      :else (reverse(first l))
      )
     )
+  )
+
+(defn fnc-even[lae]
+  (let [aridad (controlar-aridad lae 1),
+        arg (first lae)]
+  (cond
+   (error? aridad) aridad
+   (not (number? arg)) (list '*error* 'number-expected arg)
+   (not (even? arg)) nil
+   :else 't
+    ))
   )
 
 ; user=> (evaluar-escalar 32 '(v 1 w 3 x 6) '(x 5 y 11 z "hola"))
